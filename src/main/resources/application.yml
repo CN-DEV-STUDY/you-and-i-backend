@@ -4,3 +4,7 @@ server:
 spring:
   profiles:
     default: dev
+
+  main:
+    allow-bean-definition-overriding: true
+

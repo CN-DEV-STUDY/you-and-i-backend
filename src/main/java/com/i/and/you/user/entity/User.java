@@ -88,4 +88,11 @@ public class User implements UserDetails {
         // IF NEEDED 계정이 활성화되었는지 확인하는 로직
         return true; // true -> 활성화됨
     }
+
+    /**
+     * 인코딩된 패스워드로 변경
+     */
+    public void changePasswordTo(String encodedPassword) {
+        this.password = encodedPassword;
+    }
 }

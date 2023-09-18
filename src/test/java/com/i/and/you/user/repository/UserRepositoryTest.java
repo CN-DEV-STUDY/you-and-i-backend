@@ -45,7 +45,7 @@ class UserRepositoryTest {
         return User.builder()
                 .email("yaa4500@naver.com")
                 .name("노현하")
-                .username("yaa4500")
+                .nickname("yaa4500")
                 .password("1234")
                 .build();
     }
