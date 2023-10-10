@@ -1,5 +1,6 @@
 package com.i.and.you.user.entity;
 
+import com.i.and.you.period.entity.Period;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,9 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "you_id")
     private User you;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Period period;
 
     //==연관관계 메서드==//
     public void addYou(User you) {
