@@ -30,7 +30,6 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers(toH2Console())
                 .requestMatchers("/static/**");
     }
 
@@ -41,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/login", "/user").permitAll()
+                        .requestMatchers("/", "/login", "/user", "/count", "/connect").permitAll()
                         .anyRequest().authenticated()
                 )
                 .logout((logout) -> logout.permitAll())
@@ -50,10 +49,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationManagerBuilder authBuilder) throws Exception {
-        authBuilder
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userService)
-                .passwordEncoder(passwordEncoder());
-        return authBuilder.build();
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
     }
 }

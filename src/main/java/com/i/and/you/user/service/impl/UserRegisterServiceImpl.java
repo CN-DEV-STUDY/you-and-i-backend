@@ -1,22 +1,19 @@
 package com.i.and.you.user.service.impl;
 
 import com.i.and.you.user.dto.AddUserRequest;
-import com.i.and.you.user.dto.FindUserResponse;
 import com.i.and.you.user.entity.User;
 import com.i.and.you.user.repository.UserRepository;
-import com.i.and.you.user.service.UserRegisterService;
+import com.i.and.you.user.service.RegisterUserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class UserRegisterServiceImpl implements UserRegisterService {
+public class UserRegisterServiceImpl implements RegisterUserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
