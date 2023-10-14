@@ -1,6 +1,6 @@
 package com.i.and.you.user.service.impl;
 
-import com.i.and.you.user.dto.AddUserRequest;
+import com.i.and.you.user.dto.SaveUserRequest;
 import com.i.and.you.user.entity.User;
 import com.i.and.you.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -19,12 +19,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserRegisterServiceImplTest {
 
-    @InjectMocks UserRegisterServiceImpl userRegisterServiceImpl;
+    @InjectMocks UserServiceImpl userService;
     @Mock UserRepository userRepository;
     @Mock PasswordEncoder passwordEncoder;
 
-    private AddUserRequest createUserDto() {
-        return new AddUserRequest(
+    private SaveUserRequest createUserDto() {
+        return new SaveUserRequest(
                 "yaa4500@naver.com",
                 "노현하",
                 "yaa4500",
@@ -36,14 +36,14 @@ class UserRegisterServiceImplTest {
     @Test
     public void testSaveUser() throws Exception {
         // given
-        AddUserRequest userDto = createUserDto();
+        SaveUserRequest userDto = createUserDto();
         User user = userDto.toEntity();
 
         // when
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User savedUser = userRegisterServiceImpl.saveUser(userDto);
+        User savedUser = userService.saveUser(userDto);
 
         // then
         assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());

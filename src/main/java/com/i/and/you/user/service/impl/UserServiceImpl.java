@@ -1,9 +1,9 @@
 package com.i.and.you.user.service.impl;
 
-import com.i.and.you.user.dto.AddUserRequest;
+import com.i.and.you.user.dto.SaveUserRequest;
 import com.i.and.you.user.entity.User;
 import com.i.and.you.user.repository.UserRepository;
-import com.i.and.you.user.service.RegisterUserService;
+import com.i.and.you.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,25 +13,31 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class UserRegisterServiceImpl implements RegisterUserService {
+public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     @Transactional
     @Override
-    public User saveUser(AddUserRequest userDto) {
-        User me = userDto.toEntity();
-        me.changePasswordTo(passwordEncoder.encode(userDto.password()));
+    public Long saveUser(SaveUserRequest request) {
+        User me = request.toEntity();
+        me.changePasswordTo(passwordEncoder.encode(request.password()));
 
-        if (userDto.hasYou()) {
-            User you = userRepository.findById(userDto.youId())
+        if (request.hasYou()) {
+            User you = userRepository.findById(request.youId())
                     .orElseThrow(() -> new EntityNotFoundException("상대방이 존재하지 않습니다."));
             me.addYou(you);
         }
 
-        return userRepository.save(me);
+        User savedUser = userRepository.save(me);
+
+        return savedUser.getId();
     }
 
-
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
+    }
 }

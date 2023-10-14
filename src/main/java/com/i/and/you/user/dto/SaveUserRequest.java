@@ -1,9 +1,8 @@
 package com.i.and.you.user.dto;
 
 import com.i.and.you.user.entity.User;
-import lombok.Getter;
 
-public record AddUserRequest(
+public record SaveUserRequest(
         String email,
         String name,
         String nickname,

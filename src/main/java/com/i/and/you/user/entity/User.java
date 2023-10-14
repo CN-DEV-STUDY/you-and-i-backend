@@ -51,6 +51,13 @@ public class User implements UserDetails {
         this.you = me;
     }
 
+    /**
+     * 인코딩된 패스워드로 변경
+     */
+    public void changePasswordTo(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
 
     //==UserDetails 메서드==//
     // 권한 반환
@@ -93,10 +100,4 @@ public class User implements UserDetails {
         return true; // true -> 활성화됨
     }
 
-    /**
-     * 인코딩된 패스워드로 변경
-     */
-    public void changePasswordTo(String encodedPassword) {
-        this.password = encodedPassword;
-    }
 }
