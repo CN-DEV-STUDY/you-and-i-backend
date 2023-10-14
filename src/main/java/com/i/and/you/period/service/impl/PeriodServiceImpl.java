@@ -1,5 +1,6 @@
 package com.i.and.you.period.service.impl;
 
+import com.i.and.you.period.dto.PeriodResponse;
 import com.i.and.you.period.entity.Period;
 import com.i.and.you.period.repository.PeriodRepository;
 import com.i.and.you.period.service.PeriodService;
@@ -15,15 +16,25 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class PeriodServiceImpl implements PeriodService {
 
     private final PeriodRepository periodRepository;
     private final UserRepository userRepository;
 
     @Override
-    public long getPeriod(LocalDate startedAt, Long userId) {
+    public PeriodResponse getPeriod(Long userId) {
 
+        Period period = periodRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException("Period not found"));
+        LocalDate today = LocalDate.now();
+        long diff = ChronoUnit.DAYS.between(period.getStartedAt(), today);
+
+        return period.toDto(diff, period.getStartedAt());
+    }
+
+    @Transactional
+    @Override
+    public long savePeriod(LocalDate startedAt, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         periodRepository.save(Period.createPeriod(startedAt, user));
 

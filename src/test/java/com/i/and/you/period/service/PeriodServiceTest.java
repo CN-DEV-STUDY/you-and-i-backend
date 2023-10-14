@@ -36,10 +36,9 @@ class PeriodServiceTest {
         periodService = new PeriodServiceImpl(periodRepository, userRepository);
     }
 
-    @DisplayName("정확한 기간(일수)을 반환 한다.")
+    @DisplayName("정확한 기간(일수)을 저장 한다.")
     @Test
-    void getPeriod() {
-        // given
+    void savePeriod() {
         User user = User.builder()
                 .email("email@email.com")
                 .name("홍길동")
@@ -51,13 +50,21 @@ class PeriodServiceTest {
 
         // when
         LocalDate testDate = LocalDate.of(2023, 10, 9);
-        long period = periodService.getPeriod(testDate, 1L);
+        long period = periodService.savePeriod(testDate, 1L);
 
         // then
         long diff = ChronoUnit.DAYS.between(testDate, LocalDate.now());
         assertThat(period).isEqualTo(diff);
-
     }
 
+    @DisplayName("정확한 기간(일수)을 반환 한다.")
+    @Test
+    void getPeriod() {
+        // given
 
+        // when
+
+        // then
+
+    }
 }

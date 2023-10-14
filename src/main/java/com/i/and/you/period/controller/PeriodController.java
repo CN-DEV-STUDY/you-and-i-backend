@@ -1,12 +1,11 @@
 package com.i.and.you.period.controller;
 
 
+import com.i.and.you.period.dto.PeriodResponse;
 import com.i.and.you.period.service.PeriodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -18,9 +17,16 @@ public class PeriodController {
     private final PeriodService periodService;
 
     @GetMapping
-    public ResponseEntity<Long> getPeriod(LocalDate startedAt, long userId) {
+//    public ResponseEntity<PeriodResponse> getPeriod(Long userId) {
+    public ResponseEntity<PeriodResponse> getPeriod() {
         return ResponseEntity.ok()
-                .body(periodService.getPeriod(startedAt, userId));
+                .body(periodService.getPeriod(1L));
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> postPeriod(@RequestBody LocalDate startedAt, long userId) {
+        return ResponseEntity.ok()
+                .body(periodService.savePeriod(startedAt, 1L));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.i.and.you.period.entity;
 
 import com.i.and.you.common.entity.CreatedInfo;
+import com.i.and.you.period.dto.PeriodResponse;
 import com.i.and.you.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,13 @@ public class Period extends CreatedInfo {
         return Period.builder()
                 .startedAt(startedAt)
                 .user(user)
+                .build();
+    }
+
+    public PeriodResponse toDto(Long period, LocalDate startedAt) {
+        return PeriodResponse.builder()
+                .period(period)
+                .startedAt(startedAt)
                 .build();
     }
 }
