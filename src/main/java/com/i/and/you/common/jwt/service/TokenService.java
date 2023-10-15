@@ -22,8 +22,8 @@ public class TokenService {
                 .orElseThrow(() -> new IllegalArgumentException("Refresh Token이 유효하지 않습니다.")); // TODO : exception 변경 및 spring message 사용
     }
 
-    public Token validPartnerId(Long partnerId) {
-        return tokenRepository.findByPartnerId(partnerId).get();
+    public Token validUserId(Long userId) {
+        return tokenRepository.findByUserId(userId).get();
     }
 
     public void deleteById(Long tokenId) {

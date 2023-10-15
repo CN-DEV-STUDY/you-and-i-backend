@@ -13,11 +13,11 @@ import java.util.Map;
 /**
  * https://www.ocpsoft.org/opensource/how-to-safely-add-modify-servlet-request-parameter-values/
  *
- * 컨트롤러 메서드의 DTO 파라미터에 partnerId값을 JWT에서 꺼내서 set해주는 필터
+ * 컨트롤러 메서드의 DTO 파라미터에 userId값을 JWT에서 꺼내서 set해주는 필터
  */
 @RequiredArgsConstructor
 @Component
-public class LoginPartnerFilter implements Filter {
+public class LoginUserFilter implements Filter {
 
     private final TokenProvider tokenProvider;
 
@@ -30,12 +30,12 @@ public class LoginPartnerFilter implements Filter {
             return;
         }
 
-        Long partnerId = tokenProvider.getPartnerId(tokenProvider.getAccessToken(authorizationHeader));
+        Long userId = tokenProvider.getUserId(tokenProvider.getAccessToken(authorizationHeader));
 
         PrettyFacesWrappedRequest mutableHttpRequest =
                 new PrettyFacesWrappedRequest(
                         (HttpServletRequest) request,
-                        Map.of("userId", new String[]{partnerId.toString()})
+                        Map.of("userId", new String[]{userId.toString()})
                 );
 
         chain.doFilter(mutableHttpRequest, response);

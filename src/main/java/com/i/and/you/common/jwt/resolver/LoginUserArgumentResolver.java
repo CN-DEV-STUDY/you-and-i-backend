@@ -15,14 +15,14 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
-public class LoginPartnerArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final TokenProvider tokenProvider;
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(JwtUserId.class); // JwtPartnerId 어노테이션이 붙어있는지 확인
+        return parameter.hasParameterAnnotation(JwtUserId.class); // JwtUserId 어노테이션이 붙어있는지 확인
     }
 
     @Override
@@ -34,8 +34,8 @@ public class LoginPartnerArgumentResolver implements HandlerMethodArgumentResolv
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
-        Long partnerId = tokenProvider.getPartnerId(tokenProvider.getAccessToken(token));
+        Long userId = tokenProvider.getUserId(tokenProvider.getAccessToken(token));
 
-        return partnerId;
+        return userId;
     }
 }

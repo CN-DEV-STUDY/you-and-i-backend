@@ -15,7 +15,7 @@ public class Token {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Long partnerId;
+    private Long userId;
 
     @Column(nullable = false)
     private String accessToken;
@@ -25,16 +25,16 @@ public class Token {
     private String refreshToken;
 
     //===생성 메서드===//
-    public static Token createRefreshToken(Long partnerId, String refreshToken) {
+    public static Token createRefreshToken(Long userId, String refreshToken) {
         return Token.builder()
-                .partnerId(partnerId)
+                .userId(userId)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public static Token createToken(Long partnerId, String accessToken, String refreshToken) {
+    public static Token createToken(Long userId, String accessToken, String refreshToken) {
         return Token.builder()
-                .partnerId(partnerId)
+                .userId(userId)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

@@ -7,13 +7,12 @@ import java.util.Arrays;
 
 /**
  * ApiErrorCode
- * ERROR_CODE 넘버링 : Partner(1)
 */
 @Getter
 public enum ApiErrorCode {
 
-    // ========== 파트너 ========== //
-    PARTNER_NOT_FOUND("1101", HttpStatus.NOT_FOUND, "등록 되지 않은 파트너 입니다."),
+    // ========== 사용자 ========== //
+    USER_NOT_FOUND("1101", HttpStatus.NOT_FOUND, "등록 되지 않은 사용자 입니다."),
 
 
     // ========== 인증 ========== //
