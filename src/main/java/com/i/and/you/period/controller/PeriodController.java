@@ -24,7 +24,7 @@ public class PeriodController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> postPeriod(@RequestBody LocalDate startedAt, long userId) {
+    public ResponseEntity<Long> postPeriod(LocalDate startedAt) {
         return ResponseEntity.ok()
                 .body(periodService.savePeriod(startedAt, 1L));
     }
