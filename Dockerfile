@@ -11,4 +11,4 @@ COPY ${JAR_FILE} app.jar
 #COPY build/libs/*.jar app.jar
 
 # 실행 명령어
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-Dspring.config.location=classpath:/application.yml, /src/resources/application-dev.yml", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-Dspring.config.location=classpath:/application.yml, /src/main/resources/application-dev.yml", "-jar", "app.jar"]
