@@ -48,4 +48,4 @@ jobs:
 
     # 6. Docker Hub 이미지 push
     - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
