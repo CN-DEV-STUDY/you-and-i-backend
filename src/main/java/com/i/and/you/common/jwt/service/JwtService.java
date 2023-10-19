@@ -23,8 +23,8 @@ public class JwtService {
             throw new IllegalArgumentException("Refresh Token이 유효하지 않습니다."); // TODO : exception 변경 및 spring message 사용
         }
 
-        Long userId = refreshTokenService.findByRefreshToken(refreshToken).getUserId();
-        User user = userService.findById(userId);
+        String email = refreshTokenService.findByRefreshToken(refreshToken).getEmail();
+        User user = userService.findByEmail(email);
 
         return tokenProvider.generateToken(user, Duration.ofHours(1));
     }

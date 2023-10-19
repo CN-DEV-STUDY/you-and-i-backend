@@ -8,4 +8,6 @@ public interface UserService {
     Long saveUser(SaveUserRequest userDto);
 
     User findById(Long userId);
+
+    User findByEmail(String email);
 }

@@ -9,7 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
+import static com.i.and.you.common.jwt.enums.TokenDuration.ACCESS_TOKEN_DURATION;
+import static com.i.and.you.common.jwt.enums.TokenDuration.REFRESH_TOKEN_DURATION;
 
 @RequiredArgsConstructor
 @Service
@@ -22,22 +23,24 @@ public class TokenService {
                 .orElseThrow(() -> new IllegalArgumentException("Refresh Token이 유효하지 않습니다.")); // TODO : exception 변경 및 spring message 사용
     }
 
-    public Token validUserId(Long userId) {
-        return tokenRepository.findByUserId(userId).get();
-    }
-
-    public void deleteById(Long tokenId) {
-        tokenRepository.findById(tokenId)
+    public void deleteByEmail(String email) {
+        Token token = tokenRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(ApiErrorCode.TOKEN_NOT_FOUND.getMessage()));
 
-        tokenRepository.deleteById(tokenId);
+        tokenRepository.delete(token);
     }
 
     public Token save(Token token) {
         return tokenRepository.save(token);
     }
 
-    public String createToken(User user, Duration expiredAt) {
-        return tokenProvider.generateToken(user, expiredAt);
+    public String createTokens(User user) {
+        tokenRepository.findByEmail(user.getEmail())
+                .ifPresent(tokenRepository::delete);
+
+        String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION.getDuration());
+        String refreshToken = tokenProvider.generateToken(user, REFRESH_TOKEN_DURATION.getDuration());
+        tokenRepository.save(Token.createToken(user.getEmail(), accessToken, refreshToken));
+        return accessToken;
     }
 }

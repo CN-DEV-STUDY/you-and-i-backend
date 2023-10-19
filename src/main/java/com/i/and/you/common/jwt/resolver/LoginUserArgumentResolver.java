@@ -1,7 +1,7 @@
 package com.i.and.you.common.jwt.resolver;
 
 import com.i.and.you.common.jwt.TokenProvider;
-import com.i.and.you.common.jwt.annotation.JwtUserId;
+import com.i.and.you.common.jwt.annotation.JwtUserEmail;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -22,7 +22,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(JwtUserId.class); // JwtUserId 어노테이션이 붙어있는지 확인
+        return parameter.hasParameterAnnotation(JwtUserEmail.class); // JwtUserEmail 어노테이션이 붙어있는지 확인
     }
 
     @Override
@@ -30,12 +30,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         String token = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class).getHeader(AUTHORIZATION_HEADER))
                 .orElseThrow(() -> new IllegalArgumentException("Authorization 헤더가 존재하지 않습니다."));
 
-        if (!tokenProvider.validateToken(token)) {
+        String accessToken = tokenProvider.getAccessToken(token);
+
+        if (!tokenProvider.validateToken(accessToken)) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
-        Long userId = tokenProvider.getUserId(tokenProvider.getAccessToken(token));
-
-        return userId;
+        return tokenProvider.getUserEmail(accessToken);
     }
 }

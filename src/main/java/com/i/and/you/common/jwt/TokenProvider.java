@@ -22,7 +22,6 @@ public class TokenProvider {
 
     private final JwtProperties jwtProperties;
     private static final String TOKEN_PREFIX = "Bearer ";
-    public static final String PARTNER_ID = "partnerId";
 
     public String generateToken(com.i.and.you.user.entity.User user, Duration expiredAt) {
         Date now = new Date();
@@ -40,8 +39,8 @@ public class TokenProvider {
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)                             // 내용 iat : 현재 시간
                 .setExpiration(expiry)                        // 내용 exp : expiry
-                .setSubject(user.getEmail())               // 내용 sub : 파트너 이메일
-                .claim("id", user.getId())                 // 클레임 id : 파트너 id
+                .setSubject(user.getEmail())                  // 내용 sub : 파트너 이메일
+                .claim("email", user.getEmail())        // 클레임 email : user email
                 // 서명 : 시크릿키값과 함께 해시값을 HS256 방식으로 암호화
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
@@ -76,11 +75,11 @@ public class TokenProvider {
     }
 
     /**
-     * 토큰 기반으로 유저 ID를 가져오는 메서드
+     * 토큰 기반으로 유저 EMAIL을 가져오는 메서드
      */
-    public Long getUserId(String token) {
+    public String getUserEmail(String token) {
         Claims claims = getClaims(token);
-        return claims.get("id", Long.class);
+        return claims.get("email", String.class);
     }
 
     public String getAccessToken(String authorizationHeader) {

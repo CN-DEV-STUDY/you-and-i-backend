@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * https://www.ocpsoft.org/opensource/how-to-safely-add-modify-servlet-request-parameter-values/
  *
- * 컨트롤러 메서드의 DTO 파라미터에 userId값을 JWT에서 꺼내서 set해주는 필터
+ * 컨트롤러 메서드의 DTO 파라미터에 user email값을 JWT에서 꺼내서 set해주는 필터
  */
 @RequiredArgsConstructor
 @Component
@@ -23,19 +23,19 @@ public class LoginUserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String authorizationHeader = ((HttpServletRequest) request).getHeader("Authorization");
+        String token = ((HttpServletRequest) request).getHeader("Authorization");
 
-        if (authorizationHeader == null) {
+        if (token == null) {
             chain.doFilter(request, response);
             return;
         }
 
-        Long userId = tokenProvider.getUserId(tokenProvider.getAccessToken(authorizationHeader));
+        String email = tokenProvider.getUserEmail(tokenProvider.getAccessToken(token));
 
         PrettyFacesWrappedRequest mutableHttpRequest =
                 new PrettyFacesWrappedRequest(
                         (HttpServletRequest) request,
-                        Map.of("userId", new String[]{userId.toString()})
+                        Map.of("email", new String[]{email})
                 );
 
         chain.doFilter(mutableHttpRequest, response);

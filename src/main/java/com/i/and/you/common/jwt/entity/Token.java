@@ -15,26 +15,19 @@ public class Token {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Long userId;
+    private String email;
 
     @Column(nullable = false)
     private String accessToken;
 
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String refreshToken;
 
     //===생성 메서드===//
-    public static Token createRefreshToken(Long userId, String refreshToken) {
+    public static Token createToken(String email, String accessToken, String refreshToken) {
         return Token.builder()
-                .userId(userId)
-                .refreshToken(refreshToken)
-                .build();
-    }
-
-    public static Token createToken(Long userId, String accessToken, String refreshToken) {
-        return Token.builder()
-                .userId(userId)
+                .email(email)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
