@@ -64,7 +64,6 @@ jobs:
           password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
-            docker ps -a
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
             docker stop you-and-i-backend || true
             docker rm you-and-i-backend || true
