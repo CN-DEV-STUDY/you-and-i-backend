@@ -34,6 +34,8 @@ public class User implements UserDetails {
     @Column(length = 100, nullable = false)
     private String password;
 
+    private String chatRoomId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "you_id")
     private User you;

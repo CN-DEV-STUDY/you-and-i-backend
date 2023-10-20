@@ -1,6 +1,7 @@
 package com.i.and.you.auth.dto;
 
 public record LoginResponse(
-        String accessToken
+        String accessToken,
+        String chatRoomId
 ) {
 }
