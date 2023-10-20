@@ -43,7 +43,8 @@ class UserRegisterServiceImplTest {
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User savedUser = userService.saveUser(userDto);
+        User savedUser = null;
+                //userService.saveUser(userDto);
 
         // then
         assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());

@@ -27,6 +27,10 @@ public class AuthFacade {
             throw new RuntimeException("Password does not match");
         }
 
+        if (tokenService.findByEmail(user.getEmail()) != null) {
+            tokenService.deleteByEmail(user.getEmail());
+        }
+
         return new LoginResponse(tokenService.createTokens(user));
     }
 
