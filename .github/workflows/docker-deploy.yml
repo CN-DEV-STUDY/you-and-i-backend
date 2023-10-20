@@ -54,21 +54,18 @@ jobs:
   run-docker-image-on-ec2:
     # build-docker-image (위) 과정이 완료 되어야 실행
     needs: build-docker-image
-    runs-on: self-hosted
-
+    runs-on: ubuntu-latest
     steps:
-      # 1. 최신 이미지를 pull
-      - name: docker pull
-        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
-
-      # 2. 기존의 컨테이너를 중지
-      - name: docker stop container
-        run: docker stop you-and-i-backend || true
-
-      # 3. 최신 이미지를 컨테이너화하여 실행
-      - name: docker run new container
-        run: docker run -d -p 8080:8080 --name you-and-i-backend ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
-
-      # 4. 미사용 이미지를 정리
-      - name: delete old docker image
-        run: sudo docker system prune -f
+      - name: EC2 connect
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          port: ${{ secrets.EC2_SSH_PORT }}
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
+            docker stop you-and-i-backend || true
+            docker rm you-and-i-backend || true
+            docker run -d -p 8080:8080 --name you-and-i-backend ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
+            sudo docker system prune -f
