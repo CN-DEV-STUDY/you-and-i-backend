@@ -1,11 +1,13 @@
 package com.i.and.you.auth.chat.repository;
 
 import com.i.and.you.auth.chat.entity.Chat;
+import com.i.and.you.auth.chat.entity.ChatRoom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChatRedisRepositoryTest {
 
     @Autowired
-    private ChatRedisRepository chatRedisRepository;
+    private ChatRoomRedisRepository chatRoomRedisRepository;
 
     @Test
     public void testRedis() throws Exception {
@@ -25,11 +27,16 @@ class ChatRedisRepositoryTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
+        ChatRoom myChatRoom = ChatRoom.builder()
+                .chatRoomName("myChatRoom")
+                .chats(Arrays.asList(chat))
+                .build();
+
         // when
-        chatRedisRepository.save(chat);
-        Chat savedChat = chatRedisRepository.findById(chat.getId()).get();
+        chatRoomRedisRepository.save(myChatRoom);
+        ChatRoom savedChatRoom = chatRoomRedisRepository.findById(myChatRoom.getId()).get();
 
         // then
-        assertEquals(chat.getChat(), savedChat.getChat());
+        assertEquals(chat.getChat(), savedChatRoom.getChats().get(0).getChat());
     }
 }
