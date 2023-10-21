@@ -4,6 +4,7 @@ import com.i.and.you.auth.dto.LoginRequest;
 import com.i.and.you.auth.dto.LoginResponse;
 import com.i.and.you.auth.dto.LogoutRequest;
 import com.i.and.you.common.jwt.entity.Token;
+import com.i.and.you.common.jwt.repository.TokenRepository;
 import com.i.and.you.common.jwt.service.TokenService;
 import com.i.and.you.user.entity.User;
 import com.i.and.you.user.service.UserService;
@@ -20,9 +21,9 @@ public class AuthFacade {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final UserService userService;
+    private final TokenRepository tokenRepository;
 
-    // TODO : api 다시 개발 하기
-    @Transactional(noRollbackFor = EntityNotFoundException.class)
+    @Transactional
     public LoginResponse login(LoginRequest request) {
         User user = userService.findByEmail(request.email());
 
@@ -30,13 +31,7 @@ public class AuthFacade {
             throw new RuntimeException("Password does not match");
         }
 
-        try {
-            Token token = tokenService.findByEmail(user.getEmail());
-            if (token != null) {
-                tokenService.deleteByEmail(user.getEmail());
-            }
-        } catch (Exception e) {
-        }
+        tokenRepository.findByEmail(user.getEmail()).ifPresent(token -> tokenRepository.delete(token));
 
         return new LoginResponse(tokenService.createTokens(user), user.getChatRoomId());
     }
