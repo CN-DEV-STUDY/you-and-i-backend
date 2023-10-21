@@ -1,10 +1,13 @@
 package com.i.and.you.domain.chat.service.impl;
 
+import com.i.and.you.domain.chat.dto.GetChatResponse;
 import com.i.and.you.domain.chat.entity.ChatRoom;
 import com.i.and.you.domain.chat.repository.ChatRoomRedisRepository;
 import com.i.and.you.domain.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -15,7 +18,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public ChatRoom findById(String roomId) {
         return chatRoomRedisRepository.findById(roomId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다. roomId: " + roomId));
     }
 
     @Override

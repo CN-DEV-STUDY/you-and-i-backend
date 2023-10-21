@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.i.and.you.user.entity.QUser.user;
+import static com.i.and.you.domain.user.entity.QUser.user;
+
 
 @RequiredArgsConstructor
 @Repository

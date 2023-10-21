@@ -22,7 +22,7 @@ class ChatRedisRepositoryTest {
     public void testRedis() throws Exception {
         // given
         Chat chat = Chat.builder()
-                .chat("hello")
+                .message("hello")
                 .sender("sender")
                 .hasRead(false)
                 .createdAt(LocalDateTime.now())
@@ -39,6 +39,6 @@ class ChatRedisRepositoryTest {
         ChatRoom savedChatRoom = chatRoomRedisRepository.findById(myChatRoom.getId()).get();
 
         // then
-        assertEquals(chat.getChat(), savedChatRoom.getChats().get(0).getChat());
+        assertEquals(chat.getMessage(), savedChatRoom.getChats().get(0).getMessage());
     }
 }

@@ -41,7 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/login", "/users/**", "/stories/**", "/you-and-i-websocket/**").permitAll()
+                        .requestMatchers("/", "/login", "/users/**", "/stories/**", "/you-and-i-websocket/**", "/chats/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

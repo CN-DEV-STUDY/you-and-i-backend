@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Chat {
 
     private String id;
-    private String chat;
+    private String message;
     private String sender;
 
     @Accessors(fluent = true)

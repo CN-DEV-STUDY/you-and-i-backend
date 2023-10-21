@@ -48,7 +48,7 @@ class PeriodServiceTest {
 
         // when
         LocalDate testDate = LocalDate.of(2023, 10, 9);
-        long period = periodService.savePeriod(testDate, 1L);
+        long period = periodService.savePeriod(testDate, "1L");
 
         // then
         long diff = ChronoUnit.DAYS.between(testDate, LocalDate.now());
