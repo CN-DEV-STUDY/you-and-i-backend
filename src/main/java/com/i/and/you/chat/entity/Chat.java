@@ -1,4 +1,4 @@
-package com.i.and.you.auth.chat.entity;
+package com.i.and.you.chat.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

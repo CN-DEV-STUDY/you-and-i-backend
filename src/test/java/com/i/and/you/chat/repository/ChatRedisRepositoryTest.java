@@ -1,7 +1,7 @@
-package com.i.and.you.auth.chat.repository;
+package com.i.and.you.chat.repository;
 
-import com.i.and.you.auth.chat.entity.Chat;
-import com.i.and.you.auth.chat.entity.ChatRoom;
+import com.i.and.you.chat.entity.Chat;
+import com.i.and.you.chat.entity.ChatRoom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ChatRedisRepositoryTest {
@@ -30,6 +30,7 @@ class ChatRedisRepositoryTest {
         ChatRoom myChatRoom = ChatRoom.builder()
                 .chatRoomName("myChatRoom")
                 .chats(Arrays.asList(chat))
+                .participantEmails(Arrays.asList("nohyunha95@gmail.com","ddd8177@gmail.com"))
                 .build();
 
         // when

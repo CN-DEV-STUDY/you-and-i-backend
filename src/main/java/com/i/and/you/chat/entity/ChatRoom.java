@@ -1,6 +1,6 @@
-package com.i.and.you.auth.chat.entity;
+package com.i.and.you.chat.entity;
 
-import com.i.and.you.auth.chat.dto.CreateChatRoomRequest;
+import com.i.and.you.chat.dto.CreateChatRoomRequest;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

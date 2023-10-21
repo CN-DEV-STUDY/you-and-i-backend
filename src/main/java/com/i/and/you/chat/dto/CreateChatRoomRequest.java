@@ -1,4 +1,4 @@
-package com.i.and.you.auth.chat.dto;
+package com.i.and.you.chat.dto;
 
 import java.util.List;
 

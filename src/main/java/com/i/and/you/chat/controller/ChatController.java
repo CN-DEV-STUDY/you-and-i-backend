@@ -1,23 +1,23 @@
-package com.i.and.you.auth.chat.controller;
+package com.i.and.you.chat.controller;
 
-import com.i.and.you.auth.chat.dto.CreateChatRoomRequest;
-import com.i.and.you.auth.chat.dto.EnterChatRoomRequest;
-import com.i.and.you.auth.chat.entity.Chat;
-import com.i.and.you.auth.chat.service.ChatFacade;
+import com.i.and.you.chat.dto.CreateChatRoomRequest;
+import com.i.and.you.chat.dto.EnterChatRoomRequest;
+import com.i.and.you.chat.entity.Chat;
+import com.i.and.you.chat.service.ChatFacade;
 import com.i.and.you.common.api.ApiResult;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/chat")
+@Slf4j
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class ChatController {
 
     private final ChatFacade chatFacade;
@@ -27,9 +27,13 @@ public class ChatController {
         return ApiResult.createSuccess(chatFacade.createChatRoom(request));
     }
 
-    @MessageMapping("/enter/{chatRoomId}")
-    @SendTo("/topic/{chatRoomId}")
+    @MessageMapping("/chat")
+    @SendTo("/topic/enter")
     public List<Chat> enter(EnterChatRoomRequest request) {
+        log.info("===== chat room =====");
+        log.info("{} entered the chat room({}).", request.email(), request.chatRoomId());
+        log.info("===== chat room =====");
+
         return chatFacade.enter(request);
     }
 

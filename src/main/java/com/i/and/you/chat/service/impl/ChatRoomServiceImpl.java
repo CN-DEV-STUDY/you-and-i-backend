@@ -1,9 +1,8 @@
-package com.i.and.you.auth.chat.service.impl;
+package com.i.and.you.chat.service.impl;
 
-import com.i.and.you.auth.chat.dto.CreateChatRoomRequest;
-import com.i.and.you.auth.chat.entity.ChatRoom;
-import com.i.and.you.auth.chat.repository.ChatRoomRedisRepository;
-import com.i.and.you.auth.chat.service.ChatRoomService;
+import com.i.and.you.chat.entity.ChatRoom;
+import com.i.and.you.chat.repository.ChatRoomRedisRepository;
+import com.i.and.you.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +19,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public ChatRoom save(CreateChatRoomRequest request) {
-        return chatRoomRedisRepository.save(ChatRoom.createChatRoom(request));
+    public ChatRoom save(ChatRoom chatRoom) {
+        return chatRoomRedisRepository.save(chatRoom);
     }
 
     @Override
     public boolean authenticate(ChatRoom chatRoom, String email) {
-        return chatRoom.getChats().contains(email);
+        return chatRoom.getParticipantEmails().contains(email);
     }
 }
