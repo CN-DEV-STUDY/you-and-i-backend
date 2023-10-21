@@ -1,9 +1,9 @@
 package com.i.and.you.user.repository;
 
 import com.i.and.you.common.TestQueryDslConfig;
-import com.i.and.you.user.dto.FindUserRequest;
-import com.i.and.you.user.entity.User;
-import com.i.and.you.user.repository.custom.impl.UserCustomRepositoryImpl;
+import com.i.and.you.domain.user.dto.FindUserRequest;
+import com.i.and.you.domain.user.entity.User;
+import com.i.and.you.domain.user.repository.custom.impl.UserCustomRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

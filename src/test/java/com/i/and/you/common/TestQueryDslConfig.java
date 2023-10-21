@@ -1,6 +1,6 @@
 package com.i.and.you.common;
 
-import com.i.and.you.user.repository.custom.impl.UserCustomRepositoryImpl;
+import com.i.and.you.domain.user.repository.custom.impl.UserCustomRepositoryImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

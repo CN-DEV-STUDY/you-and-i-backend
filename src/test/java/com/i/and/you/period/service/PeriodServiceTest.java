@@ -1,10 +1,10 @@
 package com.i.and.you.period.service;
 
-import com.i.and.you.period.repository.PeriodRepository;
-import com.i.and.you.period.service.impl.PeriodServiceImpl;
-import com.i.and.you.user.entity.User;
-import com.i.and.you.user.repository.UserRepository;
-import org.assertj.core.api.Assertions;
+import com.i.and.you.domain.period.repository.PeriodRepository;
+import com.i.and.you.domain.period.service.PeriodService;
+import com.i.and.you.domain.period.service.impl.PeriodServiceImpl;
+import com.i.and.you.domain.user.entity.User;
+import com.i.and.you.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +26,7 @@ class PeriodServiceTest {
     @Mock PeriodRepository periodRepository;
     @Mock UserRepository userRepository;
 
-    PeriodService  periodService;
+    PeriodService periodService;
 
     @BeforeEach
     public void setUp() {

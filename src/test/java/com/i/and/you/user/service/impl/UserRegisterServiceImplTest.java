@@ -1,8 +1,9 @@
 package com.i.and.you.user.service.impl;
 
-import com.i.and.you.user.dto.SaveUserRequest;
-import com.i.and.you.user.entity.User;
-import com.i.and.you.user.repository.UserRepository;
+import com.i.and.you.domain.user.dto.SaveUserRequest;
+import com.i.and.you.domain.user.entity.User;
+import com.i.and.you.domain.user.repository.UserRepository;
+import com.i.and.you.domain.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +20,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserRegisterServiceImplTest {
 
-    @InjectMocks UserServiceImpl userService;
+    @InjectMocks
+    UserServiceImpl userService;
     @Mock UserRepository userRepository;
     @Mock PasswordEncoder passwordEncoder;
 
