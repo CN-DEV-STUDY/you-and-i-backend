@@ -1,5 +1,6 @@
 package com.i.and.you.common.security;
 
+import com.i.and.you.common.jwt.filter.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -18,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userService;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,9 +41,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/login", "/users/**", "/stories/**", "/period/**", "/you-and-i-websocket/**").permitAll()
+                        .requestMatchers("/", "/login", "/users/**", "/stories/**", "/you-and-i-websocket/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout((logout) -> logout.permitAll())
                 .csrf((csrf) -> csrf.disable());
         return http.build();

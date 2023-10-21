@@ -1,6 +1,7 @@
 package com.i.and.you.period.controller;
 
 
+import com.i.and.you.common.jwt.annotation.JwtUserEmail;
 import com.i.and.you.period.dto.PeriodResponse;
 import com.i.and.you.period.service.PeriodService;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +18,15 @@ public class PeriodController {
     private final PeriodService periodService;
 
     @GetMapping
-//    public ResponseEntity<PeriodResponse> getPeriod(Long userId) {
-    public ResponseEntity<PeriodResponse> getPeriod() {
+    public ResponseEntity<PeriodResponse> getPeriod(@JwtUserEmail String email) {
         return ResponseEntity.ok()
-                .body(periodService.getPeriod(1L));
+                .body(periodService.getPeriod(email));
     }
 
     @PostMapping
-    public ResponseEntity<Long> postPeriod(LocalDate startedAt) {
+    public ResponseEntity<Long> postPeriod(LocalDate startedAt, @JwtUserEmail String email) {
         return ResponseEntity.ok()
-                .body(periodService.savePeriod(startedAt, 1L));
+                .body(periodService.savePeriod(startedAt, email));
     }
 
 }

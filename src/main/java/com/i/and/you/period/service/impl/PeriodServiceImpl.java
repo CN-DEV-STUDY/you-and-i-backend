@@ -23,9 +23,10 @@ public class PeriodServiceImpl implements PeriodService {
     private final UserRepository userRepository;
 
     @Override
-    public PeriodResponse getPeriod(Long userId) {
+    public PeriodResponse getPeriod(String email) {
+        User user = findUserByEmail(email);
 
-        Period period = periodRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException("Period not found"));
+        Period period = periodRepository.findByUserId(user.getId()).orElseThrow(() -> new EntityNotFoundException("Period not found"));
         LocalDate today = LocalDate.now();
         long diff = ChronoUnit.DAYS.between(period.getStartedAt(), today);
 
@@ -34,12 +35,15 @@ public class PeriodServiceImpl implements PeriodService {
 
     @Transactional
     @Override
-    public long savePeriod(LocalDate startedAt, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public long savePeriod(LocalDate startedAt, String email) {
+        User user = findUserByEmail(email);
         periodRepository.save(Period.createPeriod(startedAt, user));
-
 
         LocalDate today = LocalDate.now();
         return ChronoUnit.DAYS.between(startedAt, today);
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 }
