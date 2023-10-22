@@ -1,5 +1,6 @@
-IMAGE_FILE_PATH=/home/ec2-user/action/image.txt
-IMAGE_NAME=$(cat $IMAGE_FILE_PATH)
+#IMAGE_FILE_PATH=/home/ec2-user/action/image.txt
+#IMAGE_NAME=$(cat $IMAGE_FILE_PATH)
+IMAGE_NAME=ddd8177/you-and-i-backend
 SERVICE_NAME=you-and-i-backend
 CONTAINER_NAME=you-and-i-backend
 
