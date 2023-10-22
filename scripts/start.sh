@@ -10,13 +10,8 @@ services:
     container_name: ${CONTAINER_NAME}
     image: ${IMAGE_NAME}
     ports:
-      - 8080:8080
-
-networks:
-  default:
-    name: you-and-i
-    external: true" > docker-compose.yml
+      - 8080:8080" > docker-compose.yml
 
 # 새로운 도커 컨테이너 실행
-echo "IMAGE_NAME: $IMAGE_NAME 도커 실행"
-docker-compose up -d $SERVICE_NAME
+echo "IMAGE_NAME: ${IMAGE_NAME} 도커 실행"
+docker-compose up -d ${SERVICE_NAME}
