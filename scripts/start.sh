@@ -1,8 +1,8 @@
 #IMAGE_FILE_PATH=/home/ec2-user/action/image.txt
 #IMAGE_NAME=$(cat $IMAGE_FILE_PATH)
-IMAGE_NAME= ddd8177/you-and-i-backend
-SERVICE_NAME= you-and-i-backend
-CONTAINER_NAME= you-and-i-backend
+IMAGE_NAME=ddd8177/you-and-i-backend
+SERVICE_NAME=you-and-i-backend
+CONTAINER_NAME=you-and-i-backend
 
 # Docker Compose YAML을 새로운 도커 버전으로 작성해서 저장
 echo "version: '3.8'
