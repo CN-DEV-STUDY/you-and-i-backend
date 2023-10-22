@@ -1,4 +1,5 @@
 IMAGE_FILE_PATH=/home/ec2-user/action/image.txt
+echo "IMAGE_NAME: ${IMAGE_FILE_PATH}"
 IMAGE_NAME=$(cat ${IMAGE_FILE_PATH})
 SERVICE_NAME=you-and-i-backend
 CONTAINER_NAME=you-and-i-backend
