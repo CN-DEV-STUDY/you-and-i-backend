@@ -2,7 +2,10 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "temp" ]
+    branches: [ "main" ]
+
+env:
+  PROJECT_NAME: you-and-i-backend
 
 permissions:
   contents: read
@@ -51,25 +54,40 @@ jobs:
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
 
   # docker image를 ec2에서 pull 받아서 실행
-  run-docker-image-on-ec2:
-    # build-docker-image (위) 과정이 완료 되어야 실행
-    needs: build-docker-image
+  run-docker-image-on-s3:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Github Actions IP
-        id: ip
-        uses: haythem/public-ip@v1.2
+    - uses: actions/checkout@v3
 
-      - name: EC2 connect
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          port: ${{ secrets.EC2_SSH_PORT }}
-          script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
-            docker stop you-and-i-backend || true
-            docker rm you-and-i-backend || true
-            docker run -d -p 8080:8080 --name you-and-i-backend ${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend
-            sudo docker system prune -f
+    - name: Write Docker image name to file
+      run: echo "${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend" > image_name.txt
+
+    - name: Create zip file for AWS CodeDeploy
+      run: mkdir ${{ secrets.CODE_DEPLOY_NAME }} && cp -r appspec.yml image.txt scripts ${{ secrets.CODE_DEPLOY_NAME }}
+
+      # AWS 설정
+    - name: AWS Configure
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.S3_REGION }}
+
+      # AWS S3로 배포 파일 업로드
+    - name: Upload to AWS S3
+      run: |
+        aws deploy push \
+          --application-name ${{ secrets.CODE_DEPLOY_NAME }} \
+          --s3-location s3://${{ secrets.S3_BUCKET_NAME }}/codedeploy/$GITHUB_SHA.zip \
+          --ignore-hidden-files \
+          --source ${{ secrets.CODE_DEPLOY_NAME }}
+
+      # AWS EC2 CodeDeploy 배포 요청
+    - name: Delpoy to AWS EC2
+      run: |
+        aws deploy create-deployment \
+          --application-name ${{ secrets.CODE_DEPLOY_NAME }} \
+          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --deployment-group-name ${{ secrets.CODE_DEPLOY_GROUP }} \
+          --description "Deploy artscope" \
+          --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},key=codedeploy/$GITHUB_SHA.zip,bundleType=zip
