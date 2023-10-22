@@ -2,11 +2,11 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/action/
+    destination: /home/ec2-user/action/backend/
     overwrite: yes
 
 permissions:
-  - object: /home/ec2-user/action/
+  - object: /home/ec2-user/action/backend/
     pattern: "**"
     owner: ec2-user
     group: ec2-user
