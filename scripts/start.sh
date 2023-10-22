@@ -15,5 +15,5 @@ services:
 
 # 새로운 도커 컨테이너 실행
 echo "IMAGE_NAME: $IMAGE_NAME 도커 실행"
-docker login
+docker login -u ddd8177@gmail.com --password-stdin
 docker-compose up -d $SERVICE_NAME
