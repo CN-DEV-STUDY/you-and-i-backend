@@ -55,12 +55,13 @@ jobs:
 
   # docker image를 ec2에서 pull 받아서 실행
   run-docker-image-on-s3:
+    needs: build-docker-image
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
     - name: Write Docker image name to file
-      run: echo "${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend" > image_name.txt
+      run: echo "${{ secrets.DOCKERHUB_USERNAME }}/you-and-i-backend" > image.txt
 
     - name: Create zip file for AWS CodeDeploy
       run: mkdir ${{ secrets.CODE_DEPLOY_NAME }} && cp -r appspec.yml image.txt scripts ${{ secrets.CODE_DEPLOY_NAME }}
