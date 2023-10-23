@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 )
+                .requestCache((requestCache) -> requestCache.disable())
                 .cors((cors) -> cors.disable())
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
