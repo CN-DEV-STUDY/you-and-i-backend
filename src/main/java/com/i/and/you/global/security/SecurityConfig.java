@@ -43,7 +43,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/", "/login", "/users/**", "/stories/**", "/you-and-i-websocket", "/chats/**").permitAll()
+                        .requestMatchers("/", "/login", "/users/**", "/stories/**", "/you-and-i-websocket", "/chats").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
