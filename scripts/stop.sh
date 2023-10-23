@@ -9,5 +9,5 @@ echo "실행중인 컨테이너 ID: $RUNNING_CONTAINER_ID"
 if [ -n "$RUNNING_CONTAINER_ID" ]; then
   echo "이전 도커 컨테이너 종료 및 삭제합니다"
   docker stop $CONTAINER_NAME && docker rm $CONTAINER_NAME
-  docker rmi IMAGE_NAME
+  docker rmi $IMAGE_NAME
 fi
