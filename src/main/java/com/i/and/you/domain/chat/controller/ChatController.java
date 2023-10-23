@@ -32,8 +32,6 @@ public class ChatController {
 
     @GetMapping("/chats")
     public ResponseEntity<ApiResult<List<GetChatResponse>>> chats(String chatRoomId, String email) {
-//    public ResponseEntity<ApiResult<Void>> chats(String chatRoomId, String email) {
-//        return ApiResult.createSuccessWithNoContent();
         return ApiResult.createSuccess(chatFacade.getInitialChats(chatRoomId, email));
     }
 
