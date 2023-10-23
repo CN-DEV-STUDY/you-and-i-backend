@@ -16,4 +16,4 @@ services:
 # 새로운 도커 컨테이너 실행
 echo "IMAGE_NAME: $IMAGE_NAME 도커 실행"
 cd /home/ec2-user/action/backend/scripts
-docker-compose up -d $SERVICE_NAME
+docker-compose up -d
