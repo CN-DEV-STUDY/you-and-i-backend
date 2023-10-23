@@ -41,14 +41,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/login", "/users/**", "/stories/**", "/you-and-i-websocket", "/chats").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout((logout) -> logout.permitAll())
-                .csrf((csrf) -> csrf.disable());
+                .logout((logout) -> logout.permitAll());
         return http.build();
     }
 
