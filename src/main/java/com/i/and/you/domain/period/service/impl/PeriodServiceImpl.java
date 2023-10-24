@@ -26,8 +26,12 @@ public class PeriodServiceImpl implements PeriodService {
     public PeriodResponse getPeriod(String email) {
         User user = findUserByEmail(email);
 
-        Period period = periodRepository.findByUserId(user.getId()).orElseThrow(() -> new EntityNotFoundException("Period not found"));
+        Period period = periodRepository.findByUserId(user.getId()).orElse(null);
         LocalDate today = LocalDate.now();
+
+        if (period == null) {
+            return null;
+        }
         long diff = ChronoUnit.DAYS.between(period.getStartedAt(), today);
 
         return period.toDto(diff, period.getStartedAt());
