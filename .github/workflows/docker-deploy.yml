@@ -2,7 +2,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "release" ]
+    branches: [ "main" ]
 
 env:
   PROJECT_NAME: you-and-i-backend
