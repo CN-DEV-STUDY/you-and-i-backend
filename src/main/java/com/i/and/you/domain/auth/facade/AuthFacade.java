@@ -3,6 +3,8 @@ package com.i.and.you.domain.auth.facade;
 import com.i.and.you.domain.auth.dto.LoginRequest;
 import com.i.and.you.domain.auth.dto.LoginResponse;
 import com.i.and.you.domain.auth.dto.LogoutRequest;
+import com.i.and.you.domain.auth.exception.LoginFailException;
+import com.i.and.you.global.enums.ApiErrorCode;
 import com.i.and.you.global.jwt.repository.TokenRepository;
 import com.i.and.you.global.jwt.service.TokenService;
 import com.i.and.you.domain.user.entity.User;
@@ -26,7 +28,7 @@ public class AuthFacade {
         User user = userService.findByEmail(request.email());
 
         if (!isPasswordMatches(request, user)) {
-            throw new RuntimeException("Password does not match");
+            throw new LoginFailException(ApiErrorCode.LOGIN_FAIL);
         }
 
         tokenRepository.findByEmail(user.getEmail()).ifPresent(token -> tokenRepository.delete(token));
