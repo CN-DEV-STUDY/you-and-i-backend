@@ -1,25 +1,13 @@
 package com.i.and.you.domain.user.dto;
 
-import org.springframework.util.StringUtils;
+import com.i.and.you.domain.user.enums.UserSearchType;
 
 /**
  * 회원가입 시 상대방 찾기 요청
  */
 public record FindUserRequest(
-        String name,
-        String nickname,
-        String email
+        UserSearchType searchType,
+        String searchWord
+
 ) {
-
-    public boolean hasName() {
-        return StringUtils.hasText(name);
-    }
-
-    public boolean hasNickname() {
-        return StringUtils.hasText(nickname);
-    }
-
-    public boolean hasEmail() {
-        return StringUtils.hasText(email);
-    }
 }

@@ -24,12 +24,18 @@ public class ApiResult<T> {
     private static final String ERROR_STATUS = "error";
 
     private T data;
+    private Pagination pagination;
     private String status;
     private String message;
 
     public static <T> ResponseEntity<ApiResult<T>> createSuccess(T data) {
         return ResponseEntity
                 .ok(new ApiResult<>(SUCCESS_STATUS, data, "정상적으로 처리되었습니다."));
+    }
+
+    public static <T> ResponseEntity<ApiResult<T>> createSuccess(T data, Pagination pagination) {
+        return ResponseEntity
+                .ok(new ApiResult<>(data, pagination, SUCCESS_STATUS, "정상적으로 처리되었습니다."));
     }
 
 
@@ -62,6 +68,13 @@ public class ApiResult<T> {
     private ApiResult(String status, T data, String message) {
         this.status = status;
         this.data = data;
+        this.message = message;
+    }
+
+    private ApiResult(T data, Pagination pagination, String status, String message) {
+        this.data = data;
+        this.pagination = pagination;
+        this.status = status;
         this.message = message;
     }
 }

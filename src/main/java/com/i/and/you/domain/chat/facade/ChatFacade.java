@@ -1,63 +1,68 @@
 package com.i.and.you.domain.chat.facade;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.i.and.you.domain.chat.dto.CreateChatRoomRequest;
-import com.i.and.you.domain.chat.dto.EnterChatRoomRequest;
+import com.i.and.you.domain.chat.dto.ChatRoomRequest;
+import com.i.and.you.domain.chat.dto.GetChatRequest;
 import com.i.and.you.domain.chat.dto.GetChatResponse;
 import com.i.and.you.domain.chat.entity.Chat;
-import com.i.and.you.domain.chat.entity.ChatRoom;
-import com.i.and.you.domain.chat.service.ChatRoomService;
+import com.i.and.you.domain.chat.exception.InvalidChatRoomException;
+import com.i.and.you.domain.chat.service.ChatService;
+import com.i.and.you.domain.user.entity.User;
+import com.i.and.you.domain.user.service.UserService;
+import com.i.and.you.global.enums.ApiErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ChatFacade {
 
-    private final ChatRoomService chatRoomService;
+    private final ChatService chatService;
+    private final UserService userService;
 
-    public String createChatRoom(CreateChatRoomRequest request) {
-        ChatRoom chatRoom = chatRoomService.save(ChatRoom.createChatRoom(request));
-        return chatRoom.getId();
+    public void createChatRoom(CreateChatRoomRequest request) {
+        String chatRoomId = chatService.generateChatRoomId();
+        userService.updateChatRoomId(request.participantEmails(), chatRoomId);
     }
 
-    public Chat enter(EnterChatRoomRequest request) {
-        ChatRoom chatRoom = chatRoomService.findById(removePrefix(request.chatRoomId()));
+    public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
+        User user = userService.findByEmail(request.email());
 
-        if (!chatRoomService.authenticate(chatRoom, request.email())) {
+//        Chat chat = chatService.findById(removePrefix(request.chatRoomId()));
+
+        if (!chatService.authenticate(user.getChatRoomId(), request.chatRoomId())) {
             throw new IllegalArgumentException("채팅방에 참여할 수 없습니다.");
         }
 
-        Chat chat = Chat.builder()
-                .sender(request.email())
-                .message(request.message())
-                .createdAt(LocalDateTime.now())
-                .build();
-        chatRoom.getChats().add(chat);
+        Chat chat = Chat.createChat(request);
 
-        chatRoomService.save(chatRoom);
+        chatService.save(chat);
 
         return chat;
     }
 
-    private String removePrefix(String id) {
-        if (!id.contains(":")) {
-            return id;
+    private String removePrefix(String chatRoomId) {
+        String prefix = "chat:room:";
+        if (!chatRoomId.startsWith(prefix)) {
+            throw new InvalidChatRoomException(ApiErrorCode.INVALID_CHATROOM_ID);
         }
 
-        return id.split(":")[1];
+        return chatRoomId.substring(prefix.length());
     }
 
-    public List<GetChatResponse> getInitialChats(String chatRoomId, String email) {
-        ChatRoom chatRoom = chatRoomService.findById(removePrefix(chatRoomId));
+    public List<GetChatResponse> getChats(GetChatRequest request) {
+        User user = userService.findByEmail(request.email());
 
-        if (!chatRoomService.authenticate(chatRoom, email)) {
+        if (!chatService.authenticate(user.getEmail(), request.email())) {
             throw new IllegalArgumentException("채팅방에 참여할 수 없습니다.");
         }
 
-        return chatRoom.getChats().stream()
+        List<Chat> chats = chatService.findWithPaging(user.getChatRoomId(), request.page(), request.size());
+
+        return chats.stream()
                 .map(GetChatResponse::new)
                 .toList();
     }

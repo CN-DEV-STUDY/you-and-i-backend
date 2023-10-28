@@ -2,10 +2,14 @@ package com.i.and.you.domain.user.repository.custom.impl;
 
 import com.i.and.you.domain.user.dto.FindUserRequest;
 import com.i.and.you.domain.user.entity.User;
+import com.i.and.you.domain.user.enums.UserSearchType;
 import com.i.and.you.domain.user.repository.custom.UserCustomRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,23 +25,35 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
     @Override
     public List<User> getUsers(FindUserRequest findUserRequest) {
-        return jpaQueryFactory.selectFrom(user)
-                .where(nameEq(findUserRequest.name()),
-                        nicknameEq(findUserRequest.nickname()),
-                        emailEq(findUserRequest.email()))
+        return null;
+    }
+
+    @Override
+    public Page<User> findUserUsingPaging(FindUserRequest request, Pageable pageable) {
+        List<User> users = jpaQueryFactory.selectFrom(user)
+                .where(searchTypeWordEq(request.searchType(), request.searchWord()))
                 .orderBy(user.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+        Long totalRecord = jpaQueryFactory.select(user.count())
+                .from(user)
+                .where(searchTypeWordEq(request.searchType(), request.searchWord()))
+                .fetchOne();
+
+        return new PageImpl<>(users, pageable, totalRecord);
     }
 
-    public BooleanExpression nameEq(String name) {
-        return name != null ? user.name.eq(name) : null;
-    }
+    public BooleanExpression searchTypeWordEq(UserSearchType searchType, String searchWord) {
+        if (searchType == null || searchWord == null) {
+            return null;
+        }
 
-    public BooleanExpression nicknameEq(String nickname) {
-        return nickname != null ? user.nickname.eq(nickname) : null;
-    }
-
-    public BooleanExpression emailEq(String email) {
-        return email != null ? user.email.eq(email) : null;
+        return switch (searchType) {
+            case NAME -> user.name.contains(searchWord);
+            case EMAIL -> user.email.contains(searchWord);
+            case NICKNAME -> user.nickname.contains(searchWord);
+        };
     }
 }

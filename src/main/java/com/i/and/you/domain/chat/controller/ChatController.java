@@ -1,7 +1,9 @@
 package com.i.and.you.domain.chat.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.i.and.you.domain.chat.dto.CreateChatRoomRequest;
-import com.i.and.you.domain.chat.dto.EnterChatRoomRequest;
+import com.i.and.you.domain.chat.dto.ChatRoomRequest;
+import com.i.and.you.domain.chat.dto.GetChatRequest;
 import com.i.and.you.domain.chat.dto.GetChatResponse;
 import com.i.and.you.domain.chat.entity.Chat;
 import com.i.and.you.domain.chat.facade.ChatFacade;
@@ -11,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,23 +27,22 @@ public class ChatController {
     private final ChatFacade chatFacade;
 
     @PostMapping
-    public ResponseEntity<ApiResult<String>> createChatRoom(CreateChatRoomRequest request) {
-        return ApiResult.createSuccess(chatFacade.createChatRoom(request));
+    public ResponseEntity<ApiResult<Void>> createChatRoom(CreateChatRoomRequest request) {
+        chatFacade.createChatRoom(request);
+        return ApiResult.createSuccessWithNoContent();
     }
 
     @GetMapping("/chats")
-    public ResponseEntity<ApiResult<List<GetChatResponse>>> chats(String chatRoomId, String email) {
-        return ApiResult.createSuccess(chatFacade.getInitialChats(chatRoomId, email));
+    public ResponseEntity<ApiResult<List<GetChatResponse>>> getChats(GetChatRequest request) {
+        return ApiResult.createSuccess(chatFacade.getChats(request));
     }
 
-    @MessageMapping("/chat")
-    @SendTo("/topic/enter")
-    public Chat enter(EnterChatRoomRequest request) {
-        log.info("===== chat room =====");
-        log.info("{} entered the chat room({}).", request.email(), request.chatRoomId());
-        log.info("===== chat room =====");
-
-        return chatFacade.enter(request);
+    @MessageMapping("/publish/chat/{chatRoomId}")
+    @SendTo("/queue/chat/{chatRoomId}")
+    public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
+        log.info("===== chat =====");
+        log.info("[{}] send chat to [{}].", request.email(), request.chatRoomId());
+        return chatFacade.sendAndReceiveChat(request);
     }
 
 }

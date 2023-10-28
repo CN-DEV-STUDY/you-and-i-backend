@@ -40,8 +40,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "you_id")
     private User you;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Period period;
+
 
     //==연관관계 메서드==//
     public void addYou(User you) {
@@ -102,4 +103,7 @@ public class User implements UserDetails {
         return true; // true -> 활성화됨
     }
 
+    public void updateChatRoomId(String chatRoomUUID) {
+        this.chatRoomId = chatRoomUUID;
+    }
 }

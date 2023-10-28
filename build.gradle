@@ -44,6 +44,10 @@ dependencies {
     // XML 문서와 JAVA 객체 간 매핑을 자동화
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
+    // LocalDateTime 직렬화 역직렬화 오류 해결 방법
+//    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+//    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
 
     // QueryDSL 설정
    	implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"

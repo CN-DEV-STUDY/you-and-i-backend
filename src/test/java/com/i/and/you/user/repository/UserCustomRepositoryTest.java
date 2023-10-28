@@ -3,6 +3,7 @@ package com.i.and.you.user.repository;
 import com.i.and.you.common.TestQueryDslConfig;
 import com.i.and.you.domain.user.dto.FindUserRequest;
 import com.i.and.you.domain.user.entity.User;
+import com.i.and.you.domain.user.enums.UserSearchType;
 import com.i.and.you.domain.user.repository.custom.impl.UserCustomRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,6 @@ public class UserCustomRepositoryTest {
 
 
     private FindUserRequest createFindUserRequest() {
-        return new FindUserRequest("노현하", "yaa4500", "yaa4500@naver.com");
+        return new FindUserRequest(UserSearchType.NAME, "yaa4500@naver.com");
     }
 }
