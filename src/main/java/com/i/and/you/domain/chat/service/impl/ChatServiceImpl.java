@@ -42,4 +42,9 @@ public class ChatServiceImpl implements ChatService {
     public String generateChatRoomId() {
         return "chat:room:" + UUID.randomUUID();
     }
+
+    @Override
+    public void createRoom(String chatRoomId) {
+        chatRedisRepository.createRoom(chatRoomId);
+    }
 }

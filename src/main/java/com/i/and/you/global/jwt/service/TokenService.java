@@ -37,9 +37,18 @@ public class TokenService {
     }
 
     @Transactional
-    public String createTokens(User user) {
-        String accessToken = tokenProvider.generateToken(user, TokenDuration.ACCESS_TOKEN_DURATION.getDuration());
-        String refreshToken = tokenProvider.generateToken(user, TokenDuration.REFRESH_TOKEN_DURATION.getDuration());
+    public String createTokens(User user, boolean rememberMe) {
+        String accessToken = "";
+        String refreshToken = "";
+
+        if (rememberMe) {
+            accessToken = tokenProvider.generateToken(user, TokenDuration.REMEMBER_ME_ACCESS_TOKEN_DURATION.getDuration());
+            refreshToken = tokenProvider.generateToken(user, TokenDuration.REMEMBER_ME_REFRESH_TOKEN_DURATION.getDuration());
+        } else {
+            accessToken = tokenProvider.generateToken(user, TokenDuration.ACCESS_TOKEN_DURATION.getDuration());
+            refreshToken = tokenProvider.generateToken(user, TokenDuration.REFRESH_TOKEN_DURATION.getDuration());
+        }
+
         tokenRepository.save(Token.createToken(user.getEmail(), accessToken, refreshToken));
         return accessToken;
     }

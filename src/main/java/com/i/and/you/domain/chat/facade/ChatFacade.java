@@ -23,11 +23,6 @@ public class ChatFacade {
     private final ChatService chatService;
     private final UserService userService;
 
-    public void createChatRoom(CreateChatRoomRequest request) {
-        String chatRoomId = chatService.generateChatRoomId();
-        userService.updateChatRoomId(request.participantEmails(), chatRoomId);
-    }
-
     public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
         User user = userService.findByEmail(request.email());
 
@@ -37,7 +32,7 @@ public class ChatFacade {
             throw new IllegalArgumentException("채팅방에 참여할 수 없습니다.");
         }
 
-        Chat chat = Chat.createChat(request);
+        Chat chat = Chat.createChat(request, user.getChatRoomId());
 
         chatService.save(chat);
 

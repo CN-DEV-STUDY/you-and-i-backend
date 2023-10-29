@@ -14,4 +14,6 @@ public interface ChatService {
     List<Chat> findWithPaging(String chatRoomId, int page, int size);
 
     String generateChatRoomId();
+
+    void createRoom(String chatRoomId);
 }

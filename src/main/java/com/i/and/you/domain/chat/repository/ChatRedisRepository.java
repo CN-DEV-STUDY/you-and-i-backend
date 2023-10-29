@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,11 +27,16 @@ public class ChatRedisRepository {
 
         boolean hasNext = redisTemplate.opsForList().size(chatRoomId) > end;
 
-        List<Object> chats = redisTemplate.opsForList().range(chatRoomId, start, end);
+        List<Object> chats = redisTemplate.opsForList().range(chatRoomId, 0, -1);
 
         return chats.stream()
                 .map(chat -> objectMapper.convertValue(chat, Chat.class))
+                .sorted(Comparator.comparing(Chat::getCreatedAt))
                 .toList();
 
+    }
+
+    public void createRoom(String chatRoomId) {
+        redisTemplate.opsForList().leftPush(chatRoomId, new Chat());
     }
 }

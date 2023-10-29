@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @AllArgsConstructor
 @Builder
@@ -23,17 +22,12 @@ public class Chat {
 
 
     //===생성 메서스===//
-    public static Chat createChat(ChatRoomRequest request) {
+    public static Chat createChat(ChatRoomRequest request, String chatRoomId) {
         return Chat.builder()
-                .id(generateChatId())
+                .id(chatRoomId)
                 .message(request.message())
                 .sender(request.email())
                 .createdAt(LocalDateTime.now())
                 .build();
-    }
-
-    //===비즈니스 로직===//
-    private static String generateChatId() {
-        return "chat:room:" + UUID.randomUUID();
     }
 }

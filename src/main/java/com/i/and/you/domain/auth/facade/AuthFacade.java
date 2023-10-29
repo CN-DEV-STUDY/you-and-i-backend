@@ -33,7 +33,7 @@ public class AuthFacade {
 
         tokenRepository.findByEmail(user.getEmail()).ifPresent(token -> tokenRepository.delete(token));
 
-        return new LoginResponse(tokenService.createTokens(user), user.getChatRoomId(), user.getEmail());
+        return new LoginResponse(tokenService.createTokens(user, request.rememberMe()), user.getChatRoomId(), user.getEmail());
     }
 
     private boolean isPasswordMatches(LoginRequest request, User user) {

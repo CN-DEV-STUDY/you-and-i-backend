@@ -1,8 +1,8 @@
 package com.i.and.you.domain.user.service.impl;
 
 import com.i.and.you.domain.user.dto.FindUserRequest;
-import com.i.and.you.domain.user.dto.FindUserResponse;
 import com.i.and.you.domain.user.dto.SaveUserRequest;
+import com.i.and.you.domain.user.dto.SetRelationsRequest;
 import com.i.and.you.domain.user.entity.User;
 import com.i.and.you.domain.user.repository.UserRepository;
 import com.i.and.you.domain.user.service.UserService;
@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static com.i.and.you.domain.user.dto.FindUserResponse.*;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -55,6 +53,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("사용자가 존재하지 않습니다."));
     }
 
+    @Transactional
     @Override
     public void updateChatRoomId(List<String> strings, String chatRoomId) {
         for (String email : strings) {
@@ -69,5 +68,15 @@ public class UserServiceImpl implements UserService {
         userPage.isLast();
 //        return entityToDto(userPage.getContent());
         return userPage;
+    }
+
+    @Transactional
+    @Override
+    public void setRelations(SetRelationsRequest request, String chatRoomId) {
+        List.of(request.myEmail(), request.yourEmail())
+                .forEach(email -> {
+                    User user = findByEmail(email);
+                    user.updateChatRoomId(chatRoomId);
+                });
     }
 }

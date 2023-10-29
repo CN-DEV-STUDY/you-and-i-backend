@@ -26,18 +26,12 @@ public class ChatController {
 
     private final ChatFacade chatFacade;
 
-    @PostMapping
-    public ResponseEntity<ApiResult<Void>> createChatRoom(CreateChatRoomRequest request) {
-        chatFacade.createChatRoom(request);
-        return ApiResult.createSuccessWithNoContent();
-    }
-
     @GetMapping("/chats")
     public ResponseEntity<ApiResult<List<GetChatResponse>>> getChats(GetChatRequest request) {
         return ApiResult.createSuccess(chatFacade.getChats(request));
     }
 
-    @MessageMapping("/publish/chat/{chatRoomId}")
+    @MessageMapping("/chat/{chatRoomId}")
     @SendTo("/queue/chat/{chatRoomId}")
     public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
         log.info("===== chat =====");
