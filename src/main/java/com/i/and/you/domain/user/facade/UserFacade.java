@@ -1,7 +1,10 @@
 package com.i.and.you.domain.user.facade;
 
 import com.i.and.you.domain.chat.service.ChatService;
-import com.i.and.you.domain.user.dto.*;
+import com.i.and.you.domain.user.dto.FindUserRequest;
+import com.i.and.you.domain.user.dto.SaveUserRequest;
+import com.i.and.you.domain.user.dto.SaveUserResponse;
+import com.i.and.you.domain.user.dto.SetRelationsRequest;
 import com.i.and.you.domain.user.entity.User;
 import com.i.and.you.domain.user.service.UserService;
 import com.i.and.you.global.api.ApiResult;
@@ -14,9 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.List;
 
-import static com.i.and.you.domain.user.dto.FindUserResponse.*;
+import static com.i.and.you.domain.user.dto.FindUserResponse.entityToDto;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +30,6 @@ public class UserFacade {
 
     public SaveUserResponse save(SaveUserRequest request) {
         Long userId = userService.saveUser(request);
-
         return new SaveUserResponse(
                 tokenProvider.generateToken(userService.findById(userId), Duration.ofMinutes(30))
         );
@@ -36,14 +37,14 @@ public class UserFacade {
 
     public ResponseEntity findUserUsingPaging(FindUserRequest request, Pageable pageable) {
         Page<User> userPaging = userService.findUserUsingPaging(request, pageable);
-
         return ApiResult.createSuccess(entityToDto(userPaging.getContent()), Pagination.from(userPaging));
 
     }
 
     public void setRelations(SetRelationsRequest request) {
-        String chatRoomId = chatService.generateChatRoomId();
-        chatService.createRoom(chatRoomId);
-        userService.setRelations(request, chatRoomId);
+
+
+//        String chatRoomId = chatService.generateChatRoomId();
+//        userService.setRelations(request, chatRoomId);
     }
 }

@@ -19,7 +19,11 @@ public enum ApiErrorCode {
     LOGIN_FAIL("1200", HttpStatus.BAD_REQUEST, "아이디 또는 비밀번호가 일치하지 않습니다."),
     PASSWORD_NOT_MATCH("1201", HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     TOKEN_NOT_FOUND("1202", HttpStatus.NOT_FOUND, "토큰이 존재하지 않습니다."),
-    INVALID_CHATROOM_ID("1203", HttpStatus.BAD_REQUEST, "잘못된 요청입니다.");
+    INVALID_CHATROOM_ID("1203", HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+
+
+    // ========== notification ========== //
+    SSE_ERROR("2000", HttpStatus.INTERNAL_SERVER_ERROR, "SSE 연결에 실패하였습니다.");
 
 
     private final String errorCode;

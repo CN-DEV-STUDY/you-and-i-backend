@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
     public Page<User> findUserUsingPaging(FindUserRequest request, Pageable pageable) {
         Page<User> userPage = userRepository.findUserUsingPaging(request, pageable);
         userPage.isLast();
-//        return entityToDto(userPage.getContent());
         return userPage;
     }
 
