@@ -45,20 +45,29 @@ public class User implements UserDetails {
 
 
     //==연관관계 메서드==//
-    public void addYou(User you) {
+    public void pairUpWith(User you) {
         this.you = you;
-        you.pairUpWith(this);
+        you.addMe(this);
     }
 
-    private void pairUpWith(User me) {
+    private void addMe(User me) {
         this.you = me;
     }
 
+
+    //==비즈니스 메서드==//
     /**
      * 인코딩된 패스워드로 변경
      */
     public void changePasswordTo(String encodedPassword) {
         this.password = encodedPassword;
+    }
+
+    /**
+     * 채팅방 생성
+     */
+    public void updateChatRoom(String chatRoomId) {
+        this.chatRoomId = chatRoomId;
     }
 
 

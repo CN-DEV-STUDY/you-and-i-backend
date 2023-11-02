@@ -30,14 +30,7 @@ public class UserServiceImpl implements UserService {
         User me = request.toEntity();
         me.changePasswordTo(passwordEncoder.encode(request.password()));
 
-        if (request.hasYou()) {
-            User you = userRepository.findById(request.youId())
-                    .orElseThrow(() -> new EntityNotFoundException("상대방이 존재하지 않습니다."));
-            me.addYou(you);
-        }
-
         User savedUser = userRepository.save(me);
-
         return savedUser.getId();
     }
 

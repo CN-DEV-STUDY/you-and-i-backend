@@ -35,7 +35,6 @@ public class ChatController {
     @SendTo("/queue/chat/{chatRoomId}")
     public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
         log.info("===== chat =====");
-        log.info("[{}] send chat to [{}].", request.email(), request.chatRoomId());
         return chatFacade.sendAndReceiveChat(request);
     }
 

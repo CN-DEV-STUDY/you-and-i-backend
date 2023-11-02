@@ -24,9 +24,6 @@ public class ChatFacade {
 
     public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
         User user = userService.findByEmail(request.email());
-        if (!chatService.authenticate(user.getChatRoomId(), request.chatRoomId())) {
-            throw new IllegalArgumentException("채팅방에 참여할 수 없습니다.");
-        }
         Chat chat = createChat(request, user.getChatRoomId());
         chatService.save(chat);
         return chat;

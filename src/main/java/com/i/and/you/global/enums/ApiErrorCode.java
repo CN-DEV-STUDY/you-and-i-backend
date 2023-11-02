@@ -22,8 +22,10 @@ public enum ApiErrorCode {
     INVALID_CHATROOM_ID("1203", HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
 
-    // ========== notification ========== //
-    SSE_ERROR("2000", HttpStatus.INTERNAL_SERVER_ERROR, "SSE 연결에 실패하였습니다.");
+    // ========== notice ========== //
+    SSE_ERROR("2000", HttpStatus.INTERNAL_SERVER_ERROR, "SSE 연결에 실패하였습니다."),
+    NOT_MY_NOTICE("2001", HttpStatus.BAD_REQUEST, "본인의 알림만 확인할 수 있습니다."),
+    NOTICE_NOT_FOUND("2002", HttpStatus.NOT_FOUND, "알림이 존재하지 않습니다.");
 
 
     private final String errorCode;

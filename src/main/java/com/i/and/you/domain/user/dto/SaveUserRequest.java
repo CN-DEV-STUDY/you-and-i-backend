@@ -6,8 +6,7 @@ public record SaveUserRequest(
         String email,
         String name,
         String nickname,
-        String password,
-        Long youId
+        String password
 ) {
 
     public User toEntity() {
@@ -17,9 +16,5 @@ public record SaveUserRequest(
                 .nickname(nickname)
                 .password(password)
                 .build();
-    }
-
-    public boolean hasYou() {
-        return youId != null;
     }
 }

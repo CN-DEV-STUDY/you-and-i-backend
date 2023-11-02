@@ -1,8 +1,11 @@
 package com.i.and.you.domain.notice.controller;
 
+import com.i.and.you.domain.notice.dto.GetNoticeResponse;
 import com.i.and.you.domain.notice.dto.SendRelationsNoticeRequest;
 import com.i.and.you.domain.notice.exception.SseException;
 import com.i.and.you.domain.notice.facade.NoticeFacade;
+import com.i.and.you.global.api.ApiResult;
+import com.i.and.you.global.jwt.annotation.JwtUserEmail;
 import com.i.and.you.global.sse.SseEmitters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -11,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 
-@RequestMapping("/notice")
+@RequestMapping("/notices")
 @RequiredArgsConstructor
 @RestController
 public class NoticeController {
@@ -40,6 +44,19 @@ public class NoticeController {
     @PostMapping("/send")
     public void send(@RequestBody SendRelationsNoticeRequest request) {
         noticeFacade.sendRelationsNotice(request);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResult<List<GetNoticeResponse>>> getNotices(@JwtUserEmail String email) {
+        List<GetNoticeResponse> notices = noticeFacade.getNotices(email);
+        return ApiResult.createSuccess(notices);
+    }
+
+    @PostMapping("/{noticeId}/accept")
+    public ResponseEntity<ApiResult<Void>> acceptRelations(@JwtUserEmail String email, @PathVariable Long noticeId) {
+        noticeFacade.acceptRelations(email, noticeId);
+
+        return ApiResult.createSuccessWithNoContent();
     }
 
 }

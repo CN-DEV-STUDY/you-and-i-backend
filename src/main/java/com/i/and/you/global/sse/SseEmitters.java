@@ -16,6 +16,7 @@ public class SseEmitters {
     public void put(String key, SseEmitter sseEmitter) {
         sseEmitterMap.put(key, sseEmitter);
         log.info("new emitter added: {}", sseEmitter);
+        log.info("current emitters: {}", sseEmitterMap.size());
 
         sseEmitter.onCompletion(() -> sseEmitterMap.remove(key));
         sseEmitter.onTimeout(() -> sseEmitterMap.get(key).complete());
