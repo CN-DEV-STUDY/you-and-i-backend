@@ -8,16 +8,16 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class SavePlanRequest {
+public class PlanRequest {
     private String description;
-    private LocalDate startedDate;
-    private LocalDate endedDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    public Plan createPlan(SavePlanRequest request, Long userId) {
+    public Plan createPlan(PlanRequest request, Long userId) {
         return Plan.builder()
                 .description(request.getDescription())
-                .startDate(request.getStartedDate())
-                .endDate(request.getEndedDate())
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
                 .userId(userId)
                 .build();
     }
