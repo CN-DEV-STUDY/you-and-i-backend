@@ -18,11 +18,10 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
-    private final static String HEADER_AUTHORIZATION = "Authorization";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
+        String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null) {
             filterChain.doFilter(request, response);
             return;
@@ -37,6 +36,4 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
-
 }

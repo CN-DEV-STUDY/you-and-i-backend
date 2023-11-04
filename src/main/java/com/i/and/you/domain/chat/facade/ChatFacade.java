@@ -41,4 +41,10 @@ public class ChatFacade {
                 .map(GetChatResponse::new)
                 .toList();
     }
+
+    public String getConnectionId(String email) {
+        User user = userService.findByEmail(email);
+
+        return user.getChatRoomId();
+    }
 }
