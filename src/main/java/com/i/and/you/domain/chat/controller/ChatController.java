@@ -26,13 +26,19 @@ public class ChatController {
 
     private final ChatFacade chatFacade;
 
+    @GetMapping("/chats/connection-id")
+    public ResponseEntity<ApiResult<String>> createChatRoom(String email) {
+        return ApiResult.createSuccess(chatFacade.getConnectionId(email));
+    }
+
+
     @GetMapping("/chats")
     public ResponseEntity<ApiResult<List<GetChatResponse>>> getChats(GetChatRequest request) {
         return ApiResult.createSuccess(chatFacade.getChats(request));
     }
 
-    @MessageMapping("/chat/{chatRoomId}")
-    @SendTo("/queue/chat/{chatRoomId}")
+    @MessageMapping("/chat/{connectionId}")
+    @SendTo("/queue/chat/{connectionId}")
     public Chat sendAndReceiveChat(ChatRoomRequest request) throws JsonProcessingException {
         log.info("===== chat =====");
         return chatFacade.sendAndReceiveChat(request);
