@@ -21,4 +21,11 @@ public class PlanRequest {
                 .userId(userId)
                 .build();
     }
+
+
+    @Getter
+    @Setter
+    public static class Update extends PlanRequest {
+        private Long planId;
+    }
 }

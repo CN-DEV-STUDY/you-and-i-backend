@@ -4,6 +4,7 @@ import com.i.and.you.domain.plan.dto.PlanResponse;
 import com.i.and.you.domain.plan.entity.Plan;
 import com.i.and.you.domain.plan.repository.PlanRepository;
 import com.i.and.you.domain.plan.service.PlanService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +34,15 @@ public class PlanServiceImpl implements PlanService {
                         .description(plan.getDescription())
                         .build())
                 .toList();
+    }
+
+    @Override
+    public Plan findById(Long planId) {
+        return planRepository.findById(planId).orElseThrow(() -> new EntityNotFoundException("해당하는 계획이 없습니다."));
+    }
+
+    @Override
+    public void deleteById(Long planId) {
+        planRepository.deleteById(planId);
     }
 }

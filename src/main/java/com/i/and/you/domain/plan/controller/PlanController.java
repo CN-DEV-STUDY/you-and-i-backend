@@ -29,4 +29,16 @@ public class PlanController {
         List<PlanResponse> plan = planFacade.getPlanBySearchDate(searchDate, email);
         return ApiResult.createSuccess(plan);
     }
+
+    @PutMapping
+    public ResponseEntity<ApiResult<Void>> updatePlan(@RequestBody PlanRequest.Update request) {
+        planFacade.updatePlan(request);
+        return ApiResult.createSuccessWithNoContent();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ApiResult<Void>> deletePlan(@RequestParam Long planId) {
+        planFacade.deletePlan(planId);
+        return ApiResult.createSuccessWithNoContent();
+    }
 }

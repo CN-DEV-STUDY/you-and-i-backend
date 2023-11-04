@@ -2,6 +2,7 @@ package com.i.and.you.domain.plan.facade;
 
 import com.i.and.you.domain.plan.dto.PlanRequest;
 import com.i.and.you.domain.plan.dto.PlanResponse;
+import com.i.and.you.domain.plan.entity.Plan;
 import com.i.and.you.domain.plan.service.PlanService;
 import com.i.and.you.domain.user.entity.User;
 import com.i.and.you.domain.user.service.UserService;
@@ -28,4 +29,14 @@ public class PlanFacade {
         User user = userService.findByEmail(email);
         return planService.getPlanBySearchDate(searchDate, user.getId());
     }
+
+    public void updatePlan(PlanRequest.Update request) {
+        Plan plan = planService.findById(request.getPlanId());
+        plan.updatePlan(request);
+    }
+
+    public void deletePlan(Long planId) {
+        planService.deleteById(planId);
+    }
+
 }

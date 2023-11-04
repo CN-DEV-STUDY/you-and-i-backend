@@ -10,4 +10,8 @@ public interface PlanService {
     void savePlan(Plan plan);
 
     List<PlanResponse> getPlanBySearchDate(LocalDate searchDate, Long userId);
+
+    Plan findById(Long planId);
+
+    void deleteById(Long planId);
 }

@@ -36,4 +36,10 @@ public class Plan extends BaseEntity {
                 .endDate(request.getEndDate())
                 .build();
     }
+
+    public void updatePlan(PlanRequest.Update request) {
+        this.description = request.getDescription() != null ? request.getDescription() : this.description;
+        this.startDate = request.getStartDate() != null ? request.getStartDate() : this.startDate;
+        this.endDate = request.getEndDate() != null ? request.getEndDate() : this.endDate;
+    }
 }
