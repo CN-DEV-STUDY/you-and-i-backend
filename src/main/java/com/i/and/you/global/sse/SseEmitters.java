@@ -34,4 +34,17 @@ public class SseEmitters {
             }
         }
     }
+
+    public void decreaseUnreadNoticeCount(String email, int unreadNoticeCount) {
+        SseEmitter sseEmitter = sseEmitterMap.get(email);
+        if (sseEmitter != null) {
+            try {
+                sseEmitter.send(SseEmitter.event()
+                        .name("unreadNoticeCount")
+                        .data(unreadNoticeCount));
+            } catch (Exception e) {
+                log.error("error while sending notification: {}", e.getMessage());
+            }
+        }
+    }
 }

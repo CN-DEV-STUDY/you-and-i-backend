@@ -57,9 +57,11 @@ public class NoticeFacade {
             throw new NotMyNoticeException();
         }
 
+        noticeService.delete(notice);
+        int unreadNoticeCount = getUnreadNoticeCount(email);
+        sseEmitters.decreaseUnreadNoticeCount(email, unreadNoticeCount);
         setRelations(me, notice.getSender());
         putThemInTheSameChatRoom(me, notice.getSender());
-        noticeService.delete(notice);
     }
 
     /**
