@@ -19,6 +19,7 @@ public class PlanServiceImpl implements PlanService {
 
     private final PlanRepository planRepository;
 
+    @Transactional
     @Override
     public void savePlan(Plan plan) {
         planRepository.save(plan);
@@ -41,6 +42,7 @@ public class PlanServiceImpl implements PlanService {
         return planRepository.findById(planId).orElseThrow(() -> new EntityNotFoundException("해당하는 계획이 없습니다."));
     }
 
+    @Transactional
     @Override
     public void deleteById(Long planId) {
         planRepository.deleteById(planId);
